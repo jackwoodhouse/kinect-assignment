@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeRobot.Portable", "CakeRobot.Portable\CakeRobot.Portable\CakeRobot.Portable.csproj", "{8B98D191-1C16-4196-8496-C5D7165D583C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeRobot.Controllers.Kinect", "CakeRobot.Controllers.Kinect\CakeRobot.Controllers.Kinect.csproj", "{8121846D-923E-4BB0-8647-30DA753D156E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CakeRobot.Arduino", "CakeRobot.Arduino", "{CFF45B54-1034-4404-8C13-CD55B4EDB422}"
+	ProjectSection(SolutionItems) = preProject
+		CakeRobot.Arduino\CakeRobot.Arduino.ino = CakeRobot.Arduino\CakeRobot.Arduino.ino
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B98D191-1C16-4196-8496-C5D7165D583C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B98D191-1C16-4196-8496-C5D7165D583C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B98D191-1C16-4196-8496-C5D7165D583C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8B98D191-1C16-4196-8496-C5D7165D583C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8B98D191-1C16-4196-8496-C5D7165D583C}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{8B98D191-1C16-4196-8496-C5D7165D583C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B98D191-1C16-4196-8496-C5D7165D583C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B98D191-1C16-4196-8496-C5D7165D583C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8B98D191-1C16-4196-8496-C5D7165D583C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8B98D191-1C16-4196-8496-C5D7165D583C}.Release|Win32.ActiveCfg = Release|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Release|Win32.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
