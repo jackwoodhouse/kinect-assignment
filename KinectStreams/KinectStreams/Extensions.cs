@@ -10,6 +10,7 @@ using System.Windows.Shapes;
 
 namespace KinectStreams
 {
+
     public static class Extensions
     {
         #region Camera
@@ -213,6 +214,44 @@ namespace KinectStreams
             };
 
             canvas.Children.Add(line);
+        }
+
+        public static void SendCommands(Body body)
+        {
+
+            Joint handRight = body.Joints[JointType.HandRight];
+            Joint handLeft = body.Joints[JointType.HandLeft];
+            Joint shoulderRight = body.Joints[JointType.ShoulderRight];
+            Joint shoulderLeft = body.Joints[JointType.ShoulderLeft];
+            Joint hipLeft = body.Joints[JointType.HipLeft];
+            Joint hipRight = body.Joints[JointType.HipRight];
+            Joint kneeLeft = body.Joints[JointType.KneeLeft];
+
+            if (handRight.Position.Y < hipRight.Position.Y)
+            {
+                port.Write("d");
+                // write to port 
+            }
+
+            if (handLeft.Position.Y < hipLeft.Position.Y)
+            {
+                _port.Write("a");
+            }
+
+            //if (handRight.Position.Y > hipRight.Position.Y)
+            //{
+            //    var speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
+            //    if (speed > 230) speed = 230;
+            //    _btCon.SetSpeed(Motor.Left, (int)speed);
+            //}
+
+            //if (handLeft.Position.Y > hipLeft.Position.Y)
+            //{
+            //    var speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
+            //    if (speed > 230) speed = 230;
+            //    _btCon.SetSpeed(Motor.Right, (int)speed);
+            //}
+
         }
 
         #endregion
