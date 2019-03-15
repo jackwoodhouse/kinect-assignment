@@ -8,11 +8,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace KinectStreams
 {
 
     public static class Extensions
     {
+        static Connection connection = new Connection();
+
         #region Camera
 
         public static ImageSource ToBitmap(this ColorFrame frame)
@@ -229,18 +232,23 @@ namespace KinectStreams
 
             if (handRight.Position.Y < hipRight.Position.Y)
             {
-                port.Write("d");
-                // write to port 
+               string d = "r";
+               var speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
+               connection.SendCommands(d, speed);
+               // write to ports
             }
 
             if (handLeft.Position.Y < hipLeft.Position.Y)
             {
-                _port.Write("a");
+                string d = "l";
+                var speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
+                connection.SendCommands(d, speed);
+                // write to ports
             }
 
             //if (handRight.Position.Y > hipRight.Position.Y)
             //{
-            //    var speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
+            //    var 
             //    if (speed > 230) speed = 230;
             //    _btCon.SetSpeed(Motor.Left, (int)speed);
             //}
