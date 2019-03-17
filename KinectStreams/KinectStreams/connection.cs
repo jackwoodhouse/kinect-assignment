@@ -14,18 +14,19 @@ namespace KinectStreams
     {
         SerialPort port;
      
-        public void SendCommands(string d, float s) // change to params
+        public void SendCommands(string text) // change to params
         {
-            port = new SerialPort(port.PortName, 9600);
-            port.Open();
-            //int speed = 5;
-            //string speedValue = speed.ToString();
+            port = new SerialPort("COM12", 9600);
+            
+            if (!port.IsOpen)
+            {
+                port.Open();
 
-            //port.Write("w," + speedValue); // change to params from extensions class
+            }
 
+            port.Write(text); // change to params from extensions class
         }
 
-      
     }
         
 }

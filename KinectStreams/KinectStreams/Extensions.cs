@@ -178,6 +178,8 @@ namespace KinectStreams
             canvas.DrawLine(body.Joints[JointType.KneeRight], body.Joints[JointType.AnkleRight]);
             canvas.DrawLine(body.Joints[JointType.AnkleLeft], body.Joints[JointType.FootLeft]);
             canvas.DrawLine(body.Joints[JointType.AnkleRight], body.Joints[JointType.FootRight]);
+
+            Commands(body);
         }
 
         public static void DrawPoint(this Canvas canvas, Joint joint)
@@ -217,9 +219,10 @@ namespace KinectStreams
             };
 
             canvas.Children.Add(line);
+        
         }
 
-        public static void SendCommands(Body body)
+        public static void Commands(Body body)
         {
 
             Joint handRight = body.Joints[JointType.HandRight];
@@ -230,38 +233,102 @@ namespace KinectStreams
             Joint hipRight = body.Joints[JointType.HipRight];
             Joint kneeLeft = body.Joints[JointType.KneeLeft];
 
-            if (handRight.Position.Y < hipRight.Position.Y)
+            if ((handLeft.Position.Y > hipLeft.Position.Y) && (handRight.Position.Y > hipRight.Position.Y))
             {
-               string d = "r";
-               var speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
-               connection.SendCommands(d, speed);
-               // write to ports
-            }
+                string text = "w,";
+                var speed = 0.0;
+                if ((handLeft.Position.Y == handRight.Position.Y) || (handLeft.Position.Y > handRight.Position.Y))
+                {
+                    speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
+                }
+                else if (handRight.Position.Y > handLeft.Position.Y)
+                {
+                    speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
+                }
+                int speedInt = (int)Math.Ceiling(speed);
+                speedInt = speedInt * 200;
 
-            if (handLeft.Position.Y < hipLeft.Position.Y)
-            {
-                string d = "l";
-                var speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
-                connection.SendCommands(d, speed);
+                if (speedInt > 250)
+                {
+                    speedInt = 250;
+                }
+
+
+                connection.SendCommands(text + speedInt);
                 // write to ports
             }
 
-            //if (handRight.Position.Y > hipRight.Position.Y)
-            //{
-            //    var 
-            //    if (speed > 230) speed = 230;
-            //    _btCon.SetSpeed(Motor.Left, (int)speed);
-            //}
+            else if (handRight.Position.Y > hipRight.Position.Y)
+            {
+               string text = "d,";
+               var speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
+               int speedInt = (int)Math.Ceiling(speed);
+               speedInt = speedInt * 200;
 
-            //if (handLeft.Position.Y > hipLeft.Position.Y)
-            //{
-            //    var speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
-            //    if (speed > 230) speed = 230;
-            //    _btCon.SetSpeed(Motor.Right, (int)speed);
-            //}
+               if (speedInt > 150)
+                {
+                    speedInt = 150;
+                }
+               
+
+                    connection.SendCommands(text + speedInt); // re add speedint
+                //}
+               // write to ports
+            }
+
+            else if (handLeft.Position.Y > hipLeft.Position.Y)
+            {
+               string text = "a,";
+               var speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
+               int speedInt = (int)Math.Ceiling(speed);
+               speedInt = speedInt * 200;
+
+                if (speedInt > 250)
+                {
+                    speedInt = 250;
+                }
+
+
+                connection.SendCommands(text + speedInt);
+                // write to ports
+            }
+            else if ((handLeft.Position.Y < hipLeft.Position.Y) && (handRight.Position.Y < hipRight.Position.Y))
+            {
+                string text = "s,";
+                var speed = 0.0;
+                if ((handLeft.Position.Y == handRight.Position.Y) || (handLeft.Position.Y > handRight.Position.Y))
+                {
+                    speed = (hipRight.Position.Y - handRight.Position.Y) * 200;
+                }
+                else if (handRight.Position.Y > handLeft.Position.Y)
+                {
+                    speed = (hipLeft.Position.Y - handLeft.Position.Y) * 200;
+                }
+                
+                int speedInt = (int)Math.Ceiling(speed);
+                speedInt = speedInt * 200;
+
+                if (speedInt > 150)
+                {
+                    speedInt = 150;
+                }
+
+
+                connection.SendCommands(text + speedInt); // re add speedint
+            }
+            else if ((handLeft.Position.Y == hipLeft.Position.Y) && (handRight.Position.Y == hipRight.Position.Y))
+            {
+                string text = "x,0";
+
+                connection.SendCommands(text);
+
+            }
+
+
+
 
         }
-
+  
         #endregion
     }
 }
