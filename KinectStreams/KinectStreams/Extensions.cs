@@ -232,6 +232,7 @@ namespace KinectStreams
             Joint hipLeft = body.Joints[JointType.HipLeft];
             Joint hipRight = body.Joints[JointType.HipRight];
             Joint kneeLeft = body.Joints[JointType.KneeLeft];
+            Joint kneeRight = body.Joints[JointType.KneeRight];
 
             if ((handLeft.Position.Y > hipLeft.Position.Y) && (handRight.Position.Y > hipRight.Position.Y))
             {
@@ -239,20 +240,20 @@ namespace KinectStreams
                 var speed = 0.0;
                 if ((handLeft.Position.Y == handRight.Position.Y) || (handLeft.Position.Y > handRight.Position.Y))
                 {
-                    speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
+                  speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
+
                 }
                 else if (handRight.Position.Y > handLeft.Position.Y)
                 {
                     speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
                 }
                 int speedInt = (int)Math.Ceiling(speed);
-                speedInt = speedInt * 200;
+                speedInt = speedInt * 2000;
 
-                if (speedInt > 250)
+                if (speedInt > 150)
                 {
-                    speedInt = 250;
+                    speedInt = 150;
                 }
-
 
                 connection.SendCommands(text + speedInt);
                 // write to ports
@@ -263,14 +264,14 @@ namespace KinectStreams
                string text = "d,";
                var speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
                int speedInt = (int)Math.Ceiling(speed);
-               speedInt = speedInt * 200;
+               speedInt = speedInt * 2000;
 
                if (speedInt > 150)
                 {
                     speedInt = 150;
                 }
                
-
+              
                     connection.SendCommands(text + speedInt); // re add speedint
                 //}
                // write to ports
@@ -281,28 +282,29 @@ namespace KinectStreams
                string text = "a,";
                var speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
                int speedInt = (int)Math.Ceiling(speed);
-               speedInt = speedInt * 200;
+               speedInt = speedInt * 2000;
 
-                if (speedInt > 250)
+                if (speedInt > 150)
                 {
-                    speedInt = 250;
+                    speedInt = 150;
                 }
 
 
                 connection.SendCommands(text + speedInt);
                 // write to ports
             }
-            else if ((handLeft.Position.Y < hipLeft.Position.Y) && (handRight.Position.Y < hipRight.Position.Y))
+            else if ((handLeft.Position.Y < kneeLeft.Position.Y) && (handRight.Position.Y < kneeRight.Position.Y))
             {
                 string text = "s,";
                 var speed = 0.0;
                 if ((handLeft.Position.Y == handRight.Position.Y) || (handLeft.Position.Y > handRight.Position.Y))
                 {
-                    speed = (hipRight.Position.Y - handRight.Position.Y) * 200;
+
+                    speed = (kneeRight.Position.Y - handRight.Position.Y) * 200;
                 }
                 else if (handRight.Position.Y > handLeft.Position.Y)
                 {
-                    speed = (hipLeft.Position.Y - handLeft.Position.Y) * 200;
+                    speed = (kneeLeft.Position.Y - handLeft.Position.Y) * 200;
                 }
                 
                 int speedInt = (int)Math.Ceiling(speed);
@@ -316,7 +318,8 @@ namespace KinectStreams
 
                 connection.SendCommands(text + speedInt); // re add speedint
             }
-            else if ((handLeft.Position.Y == hipLeft.Position.Y) && (handRight.Position.Y == hipRight.Position.Y))
+            else if ((handLeft.Position.Y < hipLeft.Position.Y) && (handLeft.Position.Y > kneeLeft.Position.Y) && 
+                    (handRight.Position.Y < hipRight.Position.Y) && (handRight.Position.Y > kneeRight.Position.Y))
             {
                 string text = "x,0";
 

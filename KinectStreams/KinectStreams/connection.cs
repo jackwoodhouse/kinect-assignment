@@ -13,18 +13,29 @@ namespace KinectStreams
     public partial class Connection
     {
         SerialPort port;
+        string lastMessage = null;
+
+        public Connection()
+        {
+            port = new SerialPort("COM12", 9600);
+
+        }
      
         public void SendCommands(string text) // change to params
         {
-            port = new SerialPort("COM12", 9600);
-            
+
             if (!port.IsOpen)
             {
                 port.Open();
 
             }
 
-            port.Write(text); // change to params from extensions class
+            if (lastMessage == null || lastMessage != text)
+            {
+                lastMessage = text;
+                port.Write(text); // change to params from extensions class
+            }
+
         }
 
     }
