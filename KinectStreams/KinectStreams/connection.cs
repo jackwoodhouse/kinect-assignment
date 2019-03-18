@@ -12,11 +12,20 @@ namespace KinectStreams
 {
     public partial class Connection
     {
-        SerialPort port;
-     
+        private static SerialPort port = null;
+
+        private SerialPort GetPort()
+        {
+            if (port == null)
+            {
+                port = new SerialPort("COM12", 9600);
+            }
+            return port;
+        }
+
         public void SendCommands(string text) // change to params
         {
-            port = new SerialPort("COM12", 9600);
+            port = GetPort();
             
             if (!port.IsOpen)
             {
