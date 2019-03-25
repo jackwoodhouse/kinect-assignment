@@ -24,8 +24,9 @@ class Movement{
     {
         motors.setSpeeds(speed, -speed); // set the right motor in reverse to the speed passed and the left motor to the speed passed in forwards
     };
-    static void halt() // method making the Zumo come to a stop
+    static void halt(int speed) // method making the Zumo come to a stop
     {
-        motors.setSpeeds(speed,speed); // set both the motors to a speed of Zumo
+        motors.setSpeeds(0,0); // set both the motors to a speed of Zumo
     };
+}
     

@@ -2,35 +2,30 @@
 #include "movement.h"
 
 ZumoBuzzer buzzer;
-Pushbutton button(ZUMO_BUTTON); // declare a variable so that the Pushbutton on the zumo can be used
+Pushbutton button(ZUMO_BUTTON);
 
-void setup()  // a function that sets up the Zumo
+void setup() 
 {
-  Serial.begin(9600); // initialize the serial communication
+  Serial.begin(9600);
   buzzer.play(">g32>>c32");
-
-  // Wait for the user button to be pressed and released
   button.waitForButton();
 
-  // Play music and wait for it to finish before we start driving.
-  buzzer.play("L16 cdegreg4");
-  while(buzzer.isPlaying());
 }
 
-void loop() // a loop function that is always looping
-{
-  commands(); // function call for the commands sent from the GUI
+void loop() {
+  // put your main code here, to run repeatedly:
+  commands();
 }
 
-void commands() // a function that holds the commands functionality
+void commands()
 {
   if (Serial.available() > 0) // see if there's incoming serial data
-  { 
+  {
     String commandLetter = Serial.readStringUntil(',');
     Serial.read();
     String speedValueStr = Serial.readStringUntil('\n\r');
     int speedValue = speedValueStr.toInt();
-    
+
     if (commandLetter == "w") // if the incomingBytes string is set to w
     {
       Movement::forward(speedValue); // move the Zumo forwards at a speed of 150
@@ -49,7 +44,7 @@ void commands() // a function that holds the commands functionality
     }
     else if (commandLetter == "x") // else if the incomingBytes string is empty
     {
-      Movement::halt(speedValue); // Set the motor speeds to 0 bringing the Zumo to a stop
+      Movement::halt(); // Set the motor speeds to 0 bringing the Zumo to a stop
     }
   }
 }
