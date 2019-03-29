@@ -28,44 +28,5 @@ class Movement{
     {
         motors.setSpeeds(0,0); // set both the motors to a speed of Zumo
     };
-    static void adjust(int left, int right) // method to make the Zumo adjust can return the white when it slightly touches black
-    {
-        motors.setSpeeds(left,right); // set the left and right motors based on the values passed in
-    };
-    static void right90(int speed)
-    {
-      right(125);
-      delay(890); // rotate 90 degrees
-      halt();
-    };
-    static void right180(int speed)
-    {
-      right(125);
-      delay(1790); // rotate 180 degrees
-      halt();
-    };
-    static void left90(int speed)
-    {
-      left(125);
-      delay(890); // rotate 180 degrees
-      halt();
-    };
-    static void left180(int speed)
-    {
-      left(125);
-      delay(1790);
-      halt();
-    };
-    static void leftDegreeAdjust(int speed)
-    {
-      left(125);
-      delay(100);
-      halt();
-    };
-    static void rightDegreeAdjust(int speed)
-    {
-      right(125);
-      delay(100);
-      halt();
-    };
+
 };
