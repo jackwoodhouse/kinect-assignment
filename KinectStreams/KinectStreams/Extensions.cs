@@ -236,7 +236,7 @@ namespace KinectStreams
             Joint kneeRight = body.Joints[JointType.KneeRight];
 
 
-            if ((handLeft.Position.Y > shoulderLeft.Position.Y) && (handRight.Position.Y > shoulderRight.Position.Y))
+            if ((handLeft.Position.Y < shoulderLeft.Position.Y) || (handRight.Position.Y < shoulderRight.Position.Y))
                 //if the skeletons left hand is higher than the left hip and the right hand is higher than the right hip, command the zumo to go forward
             {
                 string text = "w,";
@@ -266,7 +266,7 @@ namespace KinectStreams
                 // send the speed and direction to the zumo
                 connection.SendCommands(text + speedInt + endMarker);
             }
-            else if (handRight.Position.Y > hipRight.Position.Y)
+            else if ((handRight.Position.Y <= 0.6) && (handRight.Position.Y > hipRight.Position.Y))
             {
                string text = "d,";
                var speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
@@ -279,8 +279,8 @@ namespace KinectStreams
                 }
                 // send the speed and direction to the zumo
                 connection.SendCommands(text + speedInt + endMarker);
-            }
-            else if (handLeft.Position.Y > hipLeft.Position.Y)
+              }
+            else if ((handLeft.Position.Y <= 0.6) && (handLeft.Position.Y > hipLeft.Position.Y))
             {
                string text = "a,";
                var speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
