@@ -236,32 +236,32 @@ namespace KinectStreams
             Joint kneeRight = body.Joints[JointType.KneeRight];
 
 
-            if ((handLeft.Position.Y < shoulderLeft.Position.Y) || (handRight.Position.Y < shoulderRight.Position.Y))
+            if (((handLeft.Position.Z < shoulderLeft.Position.Z) && (handRight.Position.Z < shoulderRight.Position.Z)) && (((handLeft.Position.X < shoulderLeft.Position.X) && (handRight.Position.X < shoulderRight.Position.X))))
                 //if the skeletons left hand is higher than the left hip and the right hand is higher than the right hip, command the zumo to go forward
             {
                 string text = "w,";
-                var speed = 0.0;
+                var speedInt = 150;
 
-                // use the position of the hands to give the speed to the zumo
+                //// use the position of the hands to give the speed to the zumo
 
-                if ((handLeft.Position.Y == handRight.Position.Y) || (handLeft.Position.Y > handRight.Position.Y))
-                {
-                  speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
-                }
-                else if (handRight.Position.Y > handLeft.Position.Y)
-                {
-                    speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
-                }
+                //if ((handLeft.Position.Y == handRight.Position.Y) || (handLeft.Position.Y > handRight.Position.Y))
+                //{
+                //  speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
+                //}
+                //else if (handRight.Position.Y > handLeft.Position.Y)
+                //{
+                //    speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
+                //}
 
-                // get the speed from the skeleton and multiply it to give a useable speed value
-                int speedInt = (int)Math.Ceiling(speed);
-                speedInt = speedInt * 2000;
+                //// get the speed from the skeleton and multiply it to give a useable speed value
+                //int speedInt = (int)Math.Ceiling(speed);
+                //speedInt = speedInt * 2000;
 
                 // if the speed given is too high, limit the speed to allow the zumo to be controlable
-                if (speedInt > 150)
-                {
-                    speedInt = 150;
-                }
+                ////if (speedInt > 150)
+                ////{
+                ////    speedInt = 150;
+                ////}
 
                 // send the speed and direction to the zumo
                 connection.SendCommands(text + speedInt + endMarker);
@@ -269,53 +269,53 @@ namespace KinectStreams
             else if ((handRight.Position.Y <= 0.6) && (handRight.Position.Y > hipRight.Position.Y))
             {
                string text = "d,";
-               var speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
-               int speedInt = (int)Math.Ceiling(speed);
-               speedInt = speedInt * 2000;
+               //var speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
+               //int speedInt = (int)Math.Ceiling(speed);
+               //speedInt = speedInt * 2000;
 
-               if (speedInt > 125)
-                {
-                    speedInt = 125;
-                }
+               //if (speedInt > 125)
+               //{
+               //     speedInt = 125;
+               // }
                 // send the speed and direction to the zumo
-                connection.SendCommands(text + speedInt + endMarker);
+                connection.SendCommands(text + "125" + endMarker);
               }
             else if ((handLeft.Position.Y <= 0.6) && (handLeft.Position.Y > hipLeft.Position.Y))
             {
                string text = "a,";
-               var speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
-               int speedInt = (int)Math.Ceiling(speed);
-               speedInt = speedInt * 2000;
+               //var speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
+               //int speedInt = (int)Math.Ceiling(speed);
+               //speedInt = speedInt * 2000;
 
-                if (speedInt > 125)
-                {
-                    speedInt = 125;
-                }
+               // if (speedInt > 125)
+                //{
+                //    speedInt = 125;
+               // }
                 // send the speed and direction to the zumo
-                connection.SendCommands(text + speedInt + endMarker);
+                connection.SendCommands(text + "125" + endMarker);
             }
             else if ((handLeft.Position.Y < kneeLeft.Position.Y) && (handRight.Position.Y < kneeRight.Position.Y))
             {
                 string text = "s,";
-                var speed = 0.0;
-                if ((handLeft.Position.Y == handRight.Position.Y) || (handLeft.Position.Y > handRight.Position.Y))
-                {
+               // var speed = 0.0;
+               // if ((handLeft.Position.Y == handRight.Position.Y) || (handLeft.Position.Y > handRight.Position.Y))
+               // {
 
-                    speed = (kneeRight.Position.Y - handRight.Position.Y) * 200;
-                }
-                else if (handRight.Position.Y > handLeft.Position.Y)
-                {
-                    speed = (kneeLeft.Position.Y - handLeft.Position.Y) * 200;
-                }
-                int speedInt = (int)Math.Ceiling(speed);
-                speedInt = speedInt * 200;
+                 //   speed = (kneeRight.Position.Y - handRight.Position.Y) * 200;
+               // }
+               // else if (handRight.Position.Y > handLeft.Position.Y)
+               // {
+                //    speed = (kneeLeft.Position.Y - handLeft.Position.Y) * 200;
+               // }
+               // int speedInt = (int)Math.Ceiling(speed);
+               // speedInt = speedInt * 200;
 
-                if (speedInt > 150)
-                {
-                    speedInt = 150;
-                }
+                //if (speedInt > 150)
+                //{
+                  //  speedInt = 150;
+               // }
                 // send the speed and direction to the zumo
-                connection.SendCommands(text + speedInt); // re add speedint
+                connection.SendCommands(text + "150"); // re add speedint
             }
             else if ((handLeft.Position.Y < hipLeft.Position.Y) && (handLeft.Position.Y > kneeLeft.Position.Y) && 
                     (handRight.Position.Y < hipRight.Position.Y) && (handRight.Position.Y > kneeRight.Position.Y))
