@@ -181,7 +181,7 @@ namespace KinectStreams
             canvas.DrawLine(body.Joints[JointType.AnkleRight], body.Joints[JointType.FootRight]);
              
             
-            //once the whole skeleton is drawn, send this body image to the commands function
+            // once the whole skeleton is drawn, send this body image to the commands function
 
             Commands(body);
         }
@@ -223,6 +223,8 @@ namespace KinectStreams
         public static void Commands(Body body) // Take the body image we created earlier 
         {
 
+            string endMarker = "!";
+
             // here we use only the parts of the skeleton that are used to send commands
 
             Joint handRight = body.Joints[JointType.HandRight];
@@ -235,10 +237,14 @@ namespace KinectStreams
             Joint kneeRight = body.Joints[JointType.KneeRight];
 
 
-            if ((handLeft.Position.Y > hipLeft.Position.Y) && (handRight.Position.Y > hipRight.Position.Y))
+            if ((handLeft.Position.Y > shoulderLeft.Position.Y) && (handRight.Position.Y > shoulderRight.Position.Y))
+                //if the skeletons left hand is higher than the left hip and the right hand is higher than the right hip, command the zumo to go forward
             {
                 string text = "w,";
                 var speed = 0.0;
+
+                // use the position of the hands to give the speed to the zumo
+
                 if ((handLeft.Position.Y == handRight.Position.Y) || (handLeft.Position.Y > handRight.Position.Y))
                 {
                   speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
@@ -247,13 +253,19 @@ namespace KinectStreams
                 {
                     speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
                 }
+
+                // get the speed from the skeleton and multiply it to give a useable speed value
                 int speedInt = (int)Math.Ceiling(speed);
                 speedInt = speedInt * 2000;
+
+                // if the speed given is too high, limit the speed to allow the zumo to be controlable
                 if (speedInt > 150)
                 {
                     speedInt = 150;
                 }
-                connection.SendCommands(text + speedInt);
+
+                // send the speed and direction to the zumo
+                connection.SendCommands(text + speedInt + endMarker);
             }
             else if (handRight.Position.Y > hipRight.Position.Y)
             {
@@ -266,7 +278,8 @@ namespace KinectStreams
                 {
                     speedInt = 125;
                 }
-                connection.SendCommands(text + speedInt); // re add speedint
+                // send the speed and direction to the zumo
+                connection.SendCommands(text + speedInt + endMarker);
             }
             else if (handLeft.Position.Y > hipLeft.Position.Y)
             {
@@ -279,7 +292,8 @@ namespace KinectStreams
                 {
                     speedInt = 125;
                 }
-                connection.SendCommands(text + speedInt);
+                // send the speed and direction to the zumo
+                connection.SendCommands(text + speedInt + endMarker);
             }
             else if ((handLeft.Position.Y < kneeLeft.Position.Y) && (handRight.Position.Y < kneeRight.Position.Y))
             {
@@ -301,13 +315,15 @@ namespace KinectStreams
                 {
                     speedInt = 150;
                 }
-                connection.SendCommands(text + speedInt); // re add speedint
+                // send the speed and direction to the zumo
+                connection.SendCommands(text + speedInt + endMarker); // re add speedint
             }
             else if ((handLeft.Position.Y < hipLeft.Position.Y) && (handLeft.Position.Y > kneeLeft.Position.Y) && 
                     (handRight.Position.Y < hipRight.Position.Y) && (handRight.Position.Y > kneeRight.Position.Y))
             {
                 string text = "x,0";
-                connection.SendCommands(text);
+                // send the speed and direction to the zumo
+                connection.SendCommands(text + endMarker);
             }
         }
         #endregion
