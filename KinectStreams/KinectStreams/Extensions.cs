@@ -115,7 +115,6 @@ namespace KinectStreams
                 Y = Scale(height, skeletonMaxY, -joint.Position.Y),
                 Z = joint.Position.Z
             };
-
             return joint;
         }
 
@@ -145,7 +144,7 @@ namespace KinectStreams
 
         #region Drawing
 
-        public static void DrawSkeleton(this Canvas canvas, Body body)
+        public static void DrawSkeleton(this Canvas canvas, Body body) // Draw the skeleton on the body
         {
             if (body == null) return;
 
@@ -153,6 +152,8 @@ namespace KinectStreams
             {
                 canvas.DrawPoint(joint);
             }
+            // Kinect allows us to draw lots of different body parts. Here we draw each joint 
+            // and its connection to the next body part to create a stick figure like image
 
             canvas.DrawLine(body.Joints[JointType.Head], body.Joints[JointType.Neck]);
             canvas.DrawLine(body.Joints[JointType.Neck], body.Joints[JointType.SpineShoulder]);
@@ -178,6 +179,9 @@ namespace KinectStreams
             canvas.DrawLine(body.Joints[JointType.KneeRight], body.Joints[JointType.AnkleRight]);
             canvas.DrawLine(body.Joints[JointType.AnkleLeft], body.Joints[JointType.FootLeft]);
             canvas.DrawLine(body.Joints[JointType.AnkleRight], body.Joints[JointType.FootRight]);
+             
+            
+            //once the whole skeleton is drawn, send this body image to the commands function
 
             Commands(body);
         }
@@ -194,36 +198,32 @@ namespace KinectStreams
                 Height = 20,
                 Fill = new SolidColorBrush(Colors.LightBlue)
             };
-
             Canvas.SetLeft(ellipse, joint.Position.X - ellipse.Width / 2);
             Canvas.SetTop(ellipse, joint.Position.Y - ellipse.Height / 2);
-
             canvas.Children.Add(ellipse);
         }
 
         public static void DrawLine(this Canvas canvas, Joint first, Joint second)
         {
             if (first.TrackingState == TrackingState.NotTracked || second.TrackingState == TrackingState.NotTracked) return;
-
             first = first.ScaleTo(canvas.ActualWidth, canvas.ActualHeight);
             second = second.ScaleTo(canvas.ActualWidth, canvas.ActualHeight);
-
             Line line = new Line
             {
                 X1 = first.Position.X,
                 Y1 = first.Position.Y,
                 X2 = second.Position.X,
                 Y2 = second.Position.Y,
-                StrokeThickness = 8,
+                StrokeThickness = 6,
                 Stroke = new SolidColorBrush(Colors.LightBlue)
             };
-
             canvas.Children.Add(line);
-        
         }
 
-        public static void Commands(Body body)
+        public static void Commands(Body body) // Take the body image we created earlier 
         {
+
+            // here we use only the parts of the skeleton that are used to send commands
 
             Joint handRight = body.Joints[JointType.HandRight];
             Joint handLeft = body.Joints[JointType.HandLeft];
@@ -234,6 +234,7 @@ namespace KinectStreams
             Joint kneeLeft = body.Joints[JointType.KneeLeft];
             Joint kneeRight = body.Joints[JointType.KneeRight];
 
+
             if ((handLeft.Position.Y > hipLeft.Position.Y) && (handRight.Position.Y > hipRight.Position.Y))
             {
                 string text = "w,";
@@ -241,7 +242,6 @@ namespace KinectStreams
                 if ((handLeft.Position.Y == handRight.Position.Y) || (handLeft.Position.Y > handRight.Position.Y))
                 {
                   speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
-
                 }
                 else if (handRight.Position.Y > handLeft.Position.Y)
                 {
@@ -249,16 +249,12 @@ namespace KinectStreams
                 }
                 int speedInt = (int)Math.Ceiling(speed);
                 speedInt = speedInt * 2000;
-
                 if (speedInt > 150)
                 {
                     speedInt = 150;
                 }
-
                 connection.SendCommands(text + speedInt);
-                // write to ports
             }
-
             else if (handRight.Position.Y > hipRight.Position.Y)
             {
                string text = "d,";
@@ -266,17 +262,12 @@ namespace KinectStreams
                int speedInt = (int)Math.Ceiling(speed);
                speedInt = speedInt * 2000;
 
-               if (speedInt > 150)
+               if (speedInt > 125)
                 {
-                    speedInt = 150;
+                    speedInt = 125;
                 }
-               
-              
-                    connection.SendCommands(text + speedInt); // re add speedint
-                //}
-               // write to ports
+                connection.SendCommands(text + speedInt); // re add speedint
             }
-
             else if (handLeft.Position.Y > hipLeft.Position.Y)
             {
                string text = "a,";
@@ -284,14 +275,11 @@ namespace KinectStreams
                int speedInt = (int)Math.Ceiling(speed);
                speedInt = speedInt * 2000;
 
-                if (speedInt > 150)
+                if (speedInt > 125)
                 {
-                    speedInt = 150;
+                    speedInt = 125;
                 }
-
-
                 connection.SendCommands(text + speedInt);
-                // write to ports
             }
             else if ((handLeft.Position.Y < kneeLeft.Position.Y) && (handRight.Position.Y < kneeRight.Position.Y))
             {
@@ -306,7 +294,6 @@ namespace KinectStreams
                 {
                     speed = (kneeLeft.Position.Y - handLeft.Position.Y) * 200;
                 }
-                
                 int speedInt = (int)Math.Ceiling(speed);
                 speedInt = speedInt * 200;
 
@@ -314,24 +301,15 @@ namespace KinectStreams
                 {
                     speedInt = 150;
                 }
-
-
                 connection.SendCommands(text + speedInt); // re add speedint
             }
             else if ((handLeft.Position.Y < hipLeft.Position.Y) && (handLeft.Position.Y > kneeLeft.Position.Y) && 
                     (handRight.Position.Y < hipRight.Position.Y) && (handRight.Position.Y > kneeRight.Position.Y))
             {
                 string text = "x,0";
-
                 connection.SendCommands(text);
-
             }
-
-
-
-
         }
-  
         #endregion
     }
 }

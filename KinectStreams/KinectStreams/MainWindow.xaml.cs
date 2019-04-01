@@ -44,15 +44,15 @@ namespace KinectStreams
 
         #region Event handlers
 
+        // initialises the kinect sensors
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _sensor = KinectSensor.GetDefault();
-
             if (_sensor != null)
             {
                 _sensor.Open();
 
-                _reader = _sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Depth | FrameSourceTypes.Infrared | FrameSourceTypes.Body);
+                _reader = _sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
                 _reader.MultiSourceFrameArrived += Reader_MultiSourceFrameArrived;
             }
         }
@@ -73,8 +73,8 @@ namespace KinectStreams
         void Reader_MultiSourceFrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)
         {
             var reference = e.FrameReference.AcquireFrame();
-
-            // Color
+            
+            // Renders the Color image 
             using (var frame = reference.ColorFrameReference.AcquireFrame())
             {
                 if (frame != null)
@@ -85,32 +85,7 @@ namespace KinectStreams
                     }
                 }
             }
-
-            // Depth
-            using (var frame = reference.DepthFrameReference.AcquireFrame())
-            {
-                if (frame != null)
-                {
-                    if (_mode == Mode.Depth)
-                    {
-                        camera.Source = frame.ToBitmap();
-                    }
-                }
-            }
-
-            // Infrared
-            using (var frame = reference.InfraredFrameReference.AcquireFrame())
-            {
-                if (frame != null)
-                {
-                    if (_mode == Mode.Infrared)
-                    {
-                        camera.Source = frame.ToBitmap();
-                    }
-                }
-            }
-
-            // Body
+            // this draws the skeleton on the screen when tracking the user
             using (var frame = reference.BodyFrameReference.AcquireFrame())
             {
                 if (frame != null)
@@ -130,7 +105,7 @@ namespace KinectStreams
                                 // Draw skeleton.
                                 if (_displayBody)
                                 {
-                                    canvas.DrawSkeleton(body);
+                                    canvas.DrawSkeleton(body); 
                                 }
                             }
                         }
@@ -141,31 +116,18 @@ namespace KinectStreams
 
         private void Color_Click(object sender, RoutedEventArgs e)
         {
-            _mode = Mode.Color;
-        }
-
-        private void Depth_Click(object sender, RoutedEventArgs e)
-        {
-            _mode = Mode.Depth;
-        }
-
-        private void Infrared_Click(object sender, RoutedEventArgs e)
-        {
-            _mode = Mode.Infrared;
+            _mode = Mode.Color; // If the stop button is pressed, render a colour image that doesnt take commands.
         }
 
         private void Body_Click(object sender, RoutedEventArgs e)
         {
-            _displayBody = !_displayBody;
+            _displayBody = !_displayBody; // if the user presses start, render the skeleton and start taking commands.
         }
-
         #endregion
     }
 
     public enum Mode
     {
-        Color,
-        Depth,
-        Infrared
+        Color
     }
 }

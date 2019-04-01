@@ -11,33 +11,32 @@ using System.IO.Ports;
 namespace KinectStreams
 {
     public partial class Connection
-    {
+    {   
+        // create a new serial port variabl for our xbee connection.
         SerialPort port;
+        // set the last message sent to null, this variable allows us to limit duplicate messages being sent.
         string lastMessage = null;
 
         public Connection()
         {
+            // connect to the xbee.
             port = new SerialPort("COM12", 9600);
-
         }
-     
-        public void SendCommands(string text) // change to params
+        // take the command from Extentions and write them to the xbee.
+        public void SendCommands(string command)
         {
-
-            if (!port.IsOpen)
+            // If the port isnt already in use, then open it. 
+            if (!port.IsOpen) 
             {
                 port.Open();
-
             }
-
-            if (lastMessage == null || lastMessage != text)
+            //if the last message is null, or not the same command as just sent, write the new command to xbee.
+            if (lastMessage == null || lastMessage != command) 
             {
-                lastMessage = text;
-                port.Write(text); // change to params from extensions class
+                lastMessage = command;
+                // write the command to the xbee.
+                port.Write(command); 
             }
-
         }
-
-    }
-        
+    }       
 }
