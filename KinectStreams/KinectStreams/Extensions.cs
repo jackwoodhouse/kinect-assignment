@@ -180,7 +180,6 @@ namespace KinectStreams
             canvas.DrawLine(body.Joints[JointType.AnkleLeft], body.Joints[JointType.FootLeft]);
             canvas.DrawLine(body.Joints[JointType.AnkleRight], body.Joints[JointType.FootRight]);
              
-            
             // once the whole skeleton is drawn, send this body image to the commands function
 
             Commands(body);
@@ -214,7 +213,7 @@ namespace KinectStreams
                 Y1 = first.Position.Y,
                 X2 = second.Position.X,
                 Y2 = second.Position.Y,
-                StrokeThickness = 6,
+                StrokeThickness = 8,
                 Stroke = new SolidColorBrush(Colors.LightBlue)
             };
             canvas.Children.Add(line);
@@ -223,7 +222,7 @@ namespace KinectStreams
         public static void Commands(Body body) // Take the body image we created earlier 
         {
 
-            string endMarker = "!";
+            const string endMarker = "!";
 
             // here we use only the parts of the skeleton that are used to send commands
 
@@ -316,7 +315,7 @@ namespace KinectStreams
                     speedInt = 150;
                 }
                 // send the speed and direction to the zumo
-                connection.SendCommands(text + speedInt + endMarker); // re add speedint
+                connection.SendCommands(text + speedInt); // re add speedint
             }
             else if ((handLeft.Position.Y < hipLeft.Position.Y) && (handLeft.Position.Y > kneeLeft.Position.Y) && 
                     (handRight.Position.Y < hipRight.Position.Y) && (handRight.Position.Y > kneeRight.Position.Y))

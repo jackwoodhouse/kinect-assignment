@@ -25,6 +25,7 @@ namespace KinectStreams
         // take the command from Extentions and write them to the xbee.
         public void SendCommands(string command)
         {
+            
             // If the port isnt already in use, then open it. 
             if (!port.IsOpen) 
             {
