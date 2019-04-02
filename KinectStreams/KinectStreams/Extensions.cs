@@ -266,7 +266,7 @@ namespace KinectStreams
                 // send the speed and direction to the zumo
                 connection.SendCommands(text + speedInt + endMarker);
             }
-            else if ((handRight.Position.Y <= 0.6) && (handRight.Position.Y > hipRight.Position.Y))
+            else if ((handRight.Position.Y <= 1) && (handRight.Position.Y > hipRight.Position.Y))
             {
                string text = "d,";
                //var speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
@@ -280,7 +280,7 @@ namespace KinectStreams
                 // send the speed and direction to the zumo
                 connection.SendCommands(text + "125" + endMarker);
               }
-            else if ((handLeft.Position.Y <= 0.6) && (handLeft.Position.Y > hipLeft.Position.Y))
+            else if ((handLeft.Position.Y <= 1) && (handLeft.Position.Y > hipLeft.Position.Y))
             {
                string text = "a,";
                //var speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
