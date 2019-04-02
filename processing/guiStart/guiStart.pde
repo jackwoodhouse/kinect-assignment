@@ -12,9 +12,9 @@ public void setup() // a function that sets up the GUI
   createGUI(); // call the GUI constructor
 
   client = new MQTTClient(this); // initialise the instance of the MQTTClient using the MQTTClient constructor
-  client.connect("mqtt://liam:sykes@127.0.0.1", "pub"); // connect the client instance to the broker as a publisher
+  client.connect("mqtt://jack:wood@127.0.0.1", "pub"); // connect the client instance to the broker as a publisher
 
-  String xBeePort = "COM11"; // create a string variable to hold the COM port value
+  String xBeePort = "COM12"; // create a string variable to hold the COM port value
   serialPort = new Serial(this, xBeePort, 9600); // initalise the instance of the Serial using the Serial constructor 
 }
 
@@ -22,8 +22,11 @@ public void draw() { // a function that draws the GUI
   background(200, 200, 200); // set the background colour of the GUI
   if (serialPort.available() > 0)  // if there is data in the serial 
   {
-    String commandLetter = serialPort.readStringUntil(','); // read the data in the serial until the comma and store it in a string variable named commandLetter
-
+    String incomingMessage = serialPort.readStringUntil('!'); // read the serial data until the exclamation mark and store in the string variable incomingMessage
+  if (incomingMessage != null) // if incomingMessage is not null
+  {
+    String splitCommand[] = incomingMessage.split(","); // split the string stored incomingMessage at the comma and store in a string array named splitCommand
+    String commandLetter = splitCommand[0]; // store the first element of splitCommand into the string variable named commandLetter
     if (commandLetter != null) // if the commandLetter is not equal to null
     {
       String outgoingMessage = null; // create a string variable named outgoingMessage to be used when sending and publishing messages
@@ -58,5 +61,6 @@ public void draw() { // a function that draws the GUI
         client.publish("liam", outgoingMessage); // publish to the mqtt client using the topic 'liam' and the value of the outgoingMessage
       }
     }
+  }
   }
 }
