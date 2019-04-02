@@ -226,20 +226,23 @@ namespace KinectStreams
 
             // here we use only the parts of the skeleton that are used to send commands
 
-            Joint handRight = body.Joints[JointType.HandRight];
-            Joint handLeft = body.Joints[JointType.HandLeft];
+            Joint handTipRight = body.Joints[JointType.HandTipRight];
+            Joint handTipLeft = body.Joints[JointType.HandTipLeft];
             Joint shoulderRight = body.Joints[JointType.ShoulderRight];
             Joint shoulderLeft = body.Joints[JointType.ShoulderLeft];
             Joint hipLeft = body.Joints[JointType.HipLeft];
             Joint hipRight = body.Joints[JointType.HipRight];
             Joint kneeLeft = body.Joints[JointType.KneeLeft];
             Joint kneeRight = body.Joints[JointType.KneeRight];
+            Joint footLeft = body.Joints[JointType.FootLeft];
+            Joint footRight = body.Joints[JointType.FootRight];
 
 
-            if (((handLeft.Position.Z < shoulderLeft.Position.Z) && (handRight.Position.Z < shoulderRight.Position.Z)) && (((handLeft.Position.X < shoulderLeft.Position.X) && (handRight.Position.X < shoulderRight.Position.X))))
+
+            if ((footLeft.Position.X < hipLeft.Position.X))
                 //if the skeletons left hand is higher than the left hip and the right hand is higher than the right hip, command the zumo to go forward
             {
-                string text = "w,";
+                string text = "s,";
                 var speedInt = 150;
 
                 //// use the position of the hands to give the speed to the zumo
@@ -266,7 +269,7 @@ namespace KinectStreams
                 // send the speed and direction to the zumo
                 connection.SendCommands(text + speedInt + endMarker);
             }
-            else if ((handRight.Position.Y <= 1) && (handRight.Position.Y > hipRight.Position.Y))
+            else if ((handTipRight.Position.Y <= 1) && (handTipRight.Position.Y > hipRight.Position.Y))
             {
                string text = "d,";
                //var speed = (handRight.Position.Y - hipRight.Position.Y) * 200;
@@ -280,7 +283,7 @@ namespace KinectStreams
                 // send the speed and direction to the zumo
                 connection.SendCommands(text + "125" + endMarker);
               }
-            else if ((handLeft.Position.Y <= 1) && (handLeft.Position.Y > hipLeft.Position.Y))
+            else if ((handTipLeft.Position.Y <= 1) && (handTipLeft.Position.Y > hipLeft.Position.Y))
             {
                string text = "a,";
                //var speed = (handLeft.Position.Y - hipLeft.Position.Y) * 200;
@@ -294,9 +297,9 @@ namespace KinectStreams
                 // send the speed and direction to the zumo
                 connection.SendCommands(text + "125" + endMarker);
             }
-            else if ((handLeft.Position.Y < kneeLeft.Position.Y) && (handRight.Position.Y < kneeRight.Position.Y))
+            else if ((handTipLeft.Position.Y < kneeLeft.Position.Y) && (handTipRight.Position.Y < kneeRight.Position.Y))
             {
-                string text = "s,";
+                string text = "w,";
                // var speed = 0.0;
                // if ((handLeft.Position.Y == handRight.Position.Y) || (handLeft.Position.Y > handRight.Position.Y))
                // {
@@ -317,8 +320,8 @@ namespace KinectStreams
                 // send the speed and direction to the zumo
                 connection.SendCommands(text + "150"); // re add speedint
             }
-            else if ((handLeft.Position.Y < hipLeft.Position.Y) && (handLeft.Position.Y > kneeLeft.Position.Y) && 
-                    (handRight.Position.Y < hipRight.Position.Y) && (handRight.Position.Y > kneeRight.Position.Y))
+            else if ((handTipLeft.Position.Y < hipLeft.Position.Y) && (handTipLeft.Position.Y > kneeLeft.Position.Y) && 
+                    (handTipRight.Position.Y < hipRight.Position.Y) && (handTipRight.Position.Y > kneeRight.Position.Y))
             {
                 string text = "x,0";
                 // send the speed and direction to the zumo
