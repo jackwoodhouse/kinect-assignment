@@ -1,86 +1,61 @@
-import processing.serial.*;
-import g4p_controls.*;
-import mqtt.*;
+import processing.serial.*; // import the processing serial library
+import g4p_controls.*; // import the GUI for Processing controls library
+import mqtt.*; // import the mqtt library
 
-MQTTClient client;
+MQTTClient client; // create an instance of the MQTTClient class
 
-Serial serialPort;
+Serial serialPort; // create an instance of the Serial class
 
-final char LF = 10;
-String message;
+public void setup() // a function that sets up the GUI
+{ 
+  size(350, 400); // set the size of the GUI
+  createGUI(); // call the GUI constructor
 
-public void setup() {
-  size(650, 400);
-  createGUI();
+  client = new MQTTClient(this); // initialise the instance of the MQTTClient using the MQTTClient constructor
+  client.connect("mqtt://liam:sykes@127.0.0.1", "pub"); // connect the client instance to the broker as a publisher
 
-  client = new MQTTClient(this);
-  client.connect("mqtt://liam:sykes@127.0.0.1", "pub");
-
-  String xBeePort = "COM11";
-  serialPort = new Serial(this, xBeePort, 9600);
+  String xBeePort = "COM11"; // create a string variable to hold the COM port value
+  serialPort = new Serial(this, xBeePort, 9600); // initalise the instance of the Serial using the Serial constructor 
 }
 
-public void draw() {
-  background(200, 200, 200);
-  if (serialPort.available() > 0) 
+public void draw() { // a function that draws the GUI
+  background(200, 200, 200); // set the background colour of the GUI
+  if (serialPort.available() > 0)  // if there is data in the serial 
   {
+    String commandLetter = serialPort.readStringUntil(','); // read the data in the serial until the comma and store it in a string variable named commandLetter
 
-    String incomingMessage = serialPort.readStringUntil('!');
-    println(incomingMessage);
-    //serialPort.read();
-    //String speedValue = serialPort.readStringUntil(LF);
-    //println(speedValue);
-
-  if(incomingMessage != null)
-  {
-    String splitCommand[] = incomingMessage.split(",");
-    String commandLetter = splitCommand[0];
-      if (commandLetter.equals("w"))
+    if (commandLetter != null) // if the commandLetter is not equal to null
+    {
+      String outgoingMessage = null; // create a string variable named outgoingMessage to be used when sending and publishing messages
+      
+      if (commandLetter.equals("w")) // if the commandLetter is equal to w
       {
-        println("w");
-        message = "Zumo moving forward at speed ";
-      } 
-      else if (commandLetter.equals("a"))
+        outgoingMessage = "Zumo moving forward"; // store the value 'Zumo moving forward' in to the outgoingMessage string variable
+      } else if (commandLetter.equals("a")) // if the commandLetter is equal to a
       { 
-        println("a");
-        message = "Zumo turning left at speed ";
-      } 
-      else if (commandLetter.equals("s"))
+        outgoingMessage = "Zumo turning left"; // store the value 'Zumo turning left' in to the outgoingMessage string variable
+      } else if (commandLetter.equals("s")) // if the commandLetter is equal to s
       {
-        println("s");
-        message = "Zumo moving backwards at speed ";
-      } 
-      else if (commandLetter.equals("d"))
+        outgoingMessage = "Zumo moving backwards"; // store the value 'Zumo moving backwards' in to the outgoingMessage string variable
+      } else if (commandLetter.equals("d")) // if the commandLetter is equal to d
       {
-        println("d");
-        message = "Zumo turning right at speed";
-      } 
-      else if (commandLetter.equals("x"))
+        outgoingMessage = "Zumo turning right"; // store the value 'Zumo turning right' in to the outgoingMessage string variable
+      } else if (commandLetter.equals("x")) // if the commandLetter is equal to x
       {
-        println("x");
-        message = "Zumo has come to a stop";
+        outgoingMessage = "Zumo has come to a stop"; // store the value 'Zumo turning right' in to the outgoingMessage string variable
       }
-      else 
-      {
-        println("error Liam is dumb!");
-      }
-      //println(message);
-    
 
-    //message = message.replace("\r\n", "");
-      if(message != null)
+      if (outgoingMessage != null) // if the outgoingMessage is not equal to null
       {
-      println("setting text area");
-      String text = textarea1.getText();
-      if (text == "Messages from Zumo")
-      {
-        textarea1.setText(message);
-      } else
-      {
-        textarea1.appendText(message);
-      }
-      println("just before publish");
-      client.publish("liam", message);
+        String text = textarea1.getText(); // retrieve the text of the textarea1 and store it in a string variable named text
+        if (text == "Messages from Zumo") // if the value of text is equal to 'Messages from Zumo'
+        {
+          textarea1.setText(outgoingMessage); // set the text of the textarea1 to the value of outgoingMessage
+        } else
+        {
+          textarea1.appendText(outgoingMessage); // append the text of the textarea1 with the value of outgoingMessage
+        }
+        client.publish("liam", outgoingMessage); // publish to the mqtt client using the topic 'liam' and the value of the outgoingMessage
       }
     }
   }
