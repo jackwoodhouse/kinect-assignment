@@ -18,7 +18,7 @@ The sofware required to run this project are as follows:
 - Arduino IDE
 - XCTU
 - Processing
-- MQTT - 
+- MQTT
 
 # Movement
 
