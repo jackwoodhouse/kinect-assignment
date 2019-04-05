@@ -22,14 +22,14 @@ class Movement { // Movement class declaration
     {
       int newSpeed = restrictSpeedIfNeeded(speed); // call the restrict speed if needed method and set return value into the integer newSpeed variable
       motors.setSpeeds(-newSpeed, newSpeed); // set the left motor in reverse to the value of speedand the right motor to the value of speed in forwards
-      delay(890); // to prevent the Zumo turning more than 90 degrees
+      delay(445); // to prevent the Zumo turning more than 90 degrees
       halt(); // stop the Zumo
     };
     static void right(int speed) // method for moving the Zumo right
     {
       int newSpeed = restrictSpeedIfNeeded(speed); // call the restrict speed if needed method and set return value into the integer newSpeed variable
       motors.setSpeeds(newSpeed, -newSpeed); // set the right motor in reverse to the value of speed and the left motor to the value of speed in forwards
-      delay(890); // to prevent the Zumo from turning more than 90 degrees
+      delay(445); // to prevent the Zumo from turning more than 90 degrees
       halt(); // stop the Zumo
     };
     static void halt() // method making the Zumo come to a stop
