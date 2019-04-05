@@ -38,7 +38,7 @@ class Movement { // Movement class declaration
     };
     static int restrictSpeedIfNeeded(int speed) // restrict the speed to prevent damaging the Zumo motors
     {
-      if (speed < 0 && speed > 125) // if the value of speed is greater than 125
+      if (speed < 0 || speed > 125) // if the value of speed is greater than 125
       {
         speed = 125; // set speed to 125
       }
