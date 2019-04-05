@@ -286,26 +286,26 @@ namespace KinectStreams
                 // send the speed and direction to the zumo
                 connection.SendCommands(text + speedInt + endMarker);
             }
-            //else if ((handTipLeft.Position.Y < kneeLeft.Position.Y) && (handTipRight.Position.Y < kneeRight.Position.Y))
-            //    // if the handtipleft is lower then your knee, then move forward 
-            //{
-            //    string text = "s,";
-            //    var speed = 0.0;
-            //   if ((handTipLeft.Position.Y == handTipRight.Position.Y) || (handTipLeft.Position.Y > handTipRight.Position.Y))
-            //        // look at each hand decide which is the higher has the higher value and use that for the speed
-            //   {
-            //     speed = (kneeLeft.Position.Y - handTipLeft.Position.Y) * 200;
-            //   }
-            //   else if (handTipRight.Position.Y > handTipLeft.Position.Y)
-            //   {
-            //       speed = (kneeRight.Position.Y - handTipRight.Position.Y) * 200;
-            //   }
-            //   int speedInt = (int)Math.Ceiling(speed);
-            //   speedInt = speedInt * 200;
+            else if ((handTipLeft.Position.Y < kneeLeft.Position.Y) && (handTipRight.Position.Y < kneeRight.Position.Y))
+            // if the handtipleft is lower then your knee, then move forward 
+            {
+                string text = "s,";
+                var speed = 0.0;
+                if ((handTipLeft.Position.Y == handTipRight.Position.Y) || (handTipLeft.Position.Y > handTipRight.Position.Y))
+                // look at each hand decide which is the higher has the higher value and use that for the speed
+                {
+                    speed = (kneeLeft.Position.Y - handTipLeft.Position.Y) * 200;
+                }
+                else if (handTipRight.Position.Y > handTipLeft.Position.Y)
+                {
+                    speed = (kneeRight.Position.Y - handTipRight.Position.Y) * 200;
+                }
+                int speedInt = (int)Math.Ceiling(speed);
+                speedInt = speedInt * 200;
 
-            //    // send the speed and direction to the zumo
-            //    connection.SendCommands(text + speedInt); // re add speedint
-            //}
+                // send the speed and direction to the zumo
+                connection.SendCommands(text + speedInt); // re add speedint
+            }
             else if ((handTipLeft.Position.Y < hipLeft.Position.Y) && (handTipLeft.Position.Y > kneeLeft.Position.Y) && 
                     (handTipRight.Position.Y < hipRight.Position.Y) && (handTipRight.Position.Y > kneeRight.Position.Y))
                     // when the hands are lower than your hips but higher than your knees then stop. this is the default starting position
