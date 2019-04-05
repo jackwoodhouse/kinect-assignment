@@ -15,8 +15,15 @@ namespace KinectStreams
     public static class Extensions
     {
         static Connection connection = new Connection();
+        // this is created so we can send commands to the connection functions and communicate with the xbee
 
         #region Camera
+
+        /*
+         *  these three functions draw the camera feed to the frame.
+         *  they use a pre-defined width and height from the xaml
+         *  
+         */
 
         public static ImageSource ToBitmap(this ColorFrame frame)
         {
@@ -152,6 +159,7 @@ namespace KinectStreams
             {
                 canvas.DrawPoint(joint);
             }
+          
             // Kinect allows us to draw lots of different body parts. Here we draw each joint 
             // and its connection to the next body part to create a stick figure like image
 
@@ -257,9 +265,10 @@ namespace KinectStreams
                 connection.SendCommands(text + speedInt + endMarker);
             }
             else if ((handTipRight.Position.Y <= 1) && (handTipRight.Position.Y > hipRight.Position.Y))
+                // if the handtipright is higher than the hip and higher than the boundary then move right
             {
                string text = "d,";
-               var speed = (handTipRight.Position.Y - hipRight.Position.Y) * 200;
+               var speed = (handTipRight.Position.Y - hipRight.Position.Y) * 200; // get the y position and calcualte the speed into something higher
                int speedInt = (int)Math.Ceiling(speed);
                speedInt = speedInt * 2000;
 
@@ -267,26 +276,29 @@ namespace KinectStreams
                 connection.SendCommands(text + speedInt + endMarker);
             }
             else if ((handTipLeft.Position.Y <= 1) && (handTipLeft.Position.Y > hipLeft.Position.Y))
+                // if the handtipleft is higher than the hip and higher than the boundary then move left
             {
-               string text = "a,";
-               var speed = (handTipLeft.Position.Y - hipLeft.Position.Y) * 200;
-               int speedInt = (int)Math.Ceiling(speed);
+                string text = "a,";
+               var speed = (handTipLeft.Position.Y - hipLeft.Position.Y) * 200; // get the y position and calcualte the speed into something higher
+                int speedInt = (int)Math.Ceiling(speed);
                speedInt = speedInt * 2000;
 
                 // send the speed and direction to the zumo
                 connection.SendCommands(text + speedInt + endMarker);
             }
             else if ((handTipLeft.Position.Y < kneeLeft.Position.Y) && (handTipRight.Position.Y < kneeRight.Position.Y))
+                // if the handtipleft is lower then your knee, then move forward 
             {
                 string text = "w,";
                 var speed = 0.0;
                if ((handTipLeft.Position.Y == handTipRight.Position.Y) || (handTipLeft.Position.Y > handTipRight.Position.Y))
+                    // look at each hand decide which is the higher has the higher value and use that for the speed
                {
-                 speed = (kneeRight.Position.Y - handTipRight.Position.Y) * 200;
+                 speed = (kneeLeft.Position.Y - handTipLeft.Position.Y) * 200;
                }
                else if (handTipRight.Position.Y > handTipLeft.Position.Y)
                {
-                   speed = (kneeLeft.Position.Y - handTipLeft.Position.Y) * 200;
+                   speed = (kneeRight.Position.Y - handTipRight.Position.Y) * 200;
                }
                int speedInt = (int)Math.Ceiling(speed);
                speedInt = speedInt * 200;
@@ -296,6 +308,7 @@ namespace KinectStreams
             }
             else if ((handTipLeft.Position.Y < hipLeft.Position.Y) && (handTipLeft.Position.Y > kneeLeft.Position.Y) && 
                     (handTipRight.Position.Y < hipRight.Position.Y) && (handTipRight.Position.Y > kneeRight.Position.Y))
+                    // when the hands are lower than your hips but higher than your knees then stop. this is the default starting position
             {
                 string text = "x,0";
                 // send the speed and direction to the zumo

@@ -139,22 +139,22 @@ namespace KinectStreams
         }
         private void Color_Click(object sender, RoutedEventArgs e)
         {
-            _mode = Mode.Color;
+            _mode = Mode.Color; // change the mode to colour and call the appropriate function
         }
 
         private void Depth_Click(object sender, RoutedEventArgs e)
         {
-            _mode = Mode.Depth;
+            _mode = Mode.Depth; // change the mode to depth and call the appropriate function
         }
 
         private void Infrared_Click(object sender, RoutedEventArgs e)
         {
-            _mode = Mode.Infrared;
+            _mode = Mode.Infrared; // change the mode to infrared and call the appropriate function
         }
 
         private void Body_Click(object sender, RoutedEventArgs e)
         {
-            _displayBody = !_displayBody;
+            _displayBody = !_displayBody; // change the mode to display the body tracking
         }
 
         #endregion
