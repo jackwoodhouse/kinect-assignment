@@ -250,7 +250,7 @@ namespace KinectStreams
             if ((footLeft.Position.X < hipLeft.Position.X))
                 //if the skeletons left hand is higher than the left hip and the right hand is higher than the right hip, command the zumo to go forward
             {
-                string text = "s,";
+                string text = "w,";
                 var speed = 0.0;
 
                 // use the position of the foot to give the speed to the zumo
@@ -289,7 +289,7 @@ namespace KinectStreams
             else if ((handTipLeft.Position.Y < kneeLeft.Position.Y) && (handTipRight.Position.Y < kneeRight.Position.Y))
                 // if the handtipleft is lower then your knee, then move forward 
             {
-                string text = "w,";
+                string text = "s,";
                 var speed = 0.0;
                if ((handTipLeft.Position.Y == handTipRight.Position.Y) || (handTipLeft.Position.Y > handTipRight.Position.Y))
                     // look at each hand decide which is the higher has the higher value and use that for the speed
