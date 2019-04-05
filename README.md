@@ -14,9 +14,9 @@ The hardware required to run this project are as follows:
 # Software 
 
 The sofware required to run this project are as follows:
-- Visual Studio
+- Microsoft Visual Studio
 - Arduino IDE
-- XCTU
+- Digi XCTU
 - Processing
 - MQTT
 
@@ -25,3 +25,4 @@ The sofware required to run this project are as follows:
 - Stop command is the default starting position with the Left and Right hands by the sides and legs together
 - Left and Right commands are issued by raising their respective arms to shoulder height
 - Forwards commands are issued by moving the Left or Right leg away from the body
+- Backwards commands are issued by lowering the hands below the knees
